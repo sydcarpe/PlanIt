@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="cancelButtononClick"
             android:text="Cancel"
             app:icon="@android:drawable/btn_dialog" />
 
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="addButtonOnClick"
             android:text="Add"
             app:icon="@android:drawable/ic_input_add" />
     </LinearLayout>
