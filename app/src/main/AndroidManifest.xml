@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanIt">
-        <activity android:name=".AfterAddedPage"></activity>
+        <activity android:name=".searchPage"></activity>
+        <activity android:name=".AfterAddedPage" />
         <activity android:name=".addPage" />
         <activity android:name=".pastPlanners" />
         <activity android:name=".MainActivity">

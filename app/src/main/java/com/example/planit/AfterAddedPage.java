@@ -6,16 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //will show the added list after it is done
 
 public class AfterAddedPage extends AppCompatActivity {
+    private TextView justAddedTextView;
+    private TextView taskList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_added_page);
+
+        justAddedTextView = (TextView)findViewById(R.id.justAddedTaskTextView);
+        taskList = (TextView)findViewById(R.id.taskList);
     }
 
     // Creating the menu to be viewable
@@ -48,7 +57,7 @@ public class AfterAddedPage extends AppCompatActivity {
                 startActivity(myIntent);
                 return true;
 
-            //filter button
+            //filter button 
             case R.id.actionFilter:
                 Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
                 return true;
@@ -65,4 +74,16 @@ public class AfterAddedPage extends AppCompatActivity {
         }
 
     } // end of onOptionsSelectMenu
+
+    // maybe adding the find and delete things here - or edit
+
+    public void findClick(View v){
+       String taskName = justAddedTextView.getText().toString();
+       PlannerDBHandler handler = new PlannerDBHandler(this);
+
+       //Task task = handler.findTask(taskName);
+    }
+
+
+
 }

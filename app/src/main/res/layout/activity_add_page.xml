@@ -72,19 +72,40 @@
             android:id="@+id/errandCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onErrandClick"
             android:text="Errand" />
 
         <CheckBox
             android:id="@+id/homeworkCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onHomeworkClick"
             android:text="Homework" />
 
         <CheckBox
             android:id="@+id/choreCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onChoreClick"
             android:text="Chore" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/dueDateEditTextDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="2dp"
+        android:ems="10"
+        android:hint="dd/MM/yyyy"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -22,6 +23,8 @@ public class pastPlanners extends AppCompatActivity {
     // https://www.tutorialspoint.com/how-can-i-add-items-to-a-spinner-in-android
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +35,19 @@ public class pastPlanners extends AppCompatActivity {
 
 
         //test drop down menu arrayList
-        ArrayList<String> testList = new ArrayList<String>(5);
+        ArrayList<String> testList = new ArrayList<String>();
 
-        testList.add("test1");
-        testList.add("test2");
-        testList.add("test3");
-        testList.add("test4");
-        testList.add("test5");
+
+
+        // crashes app -_-
+        /*
+        for (int i = taskArrayList.taskList.size(); i < 0; i++){
+            String curTaskName = myTasks.get(i).getTaskName();
+            if (curTaskName != null){
+                testList.add(curTaskName);
+            }
+        }
+        */
 
         // creating and adding to the spinner
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, testList);
@@ -77,7 +86,9 @@ public class pastPlanners extends AppCompatActivity {
 
             //filter button
             case R.id.actionFilter:
-                Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
+                myIntent = new Intent(this, searchPage.class);
+                startActivity(myIntent);
                 return true;
 
             //past planner button
@@ -90,5 +101,7 @@ public class pastPlanners extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 }

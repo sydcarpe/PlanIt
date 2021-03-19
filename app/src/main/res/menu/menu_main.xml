@@ -20,6 +20,6 @@
     <item
         android:id="@+id/actionFilter"
         android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Filter"
+        android:title="Search"
         app:showAsAction="ifRoom" />
 </menu>

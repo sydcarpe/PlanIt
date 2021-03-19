@@ -1,46 +1,30 @@
 package com.example.planit;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.text.ParseException;
 
-
-public class MainActivity extends AppCompatActivity {
-    // have to add images a certain way
-    // set densitys too!
-    //link to do it
-    //https://developer.android.com/studio/write/resource-manager
-
-    // creating an array list to be seen by all
-
-
-
-
+public class searchPage extends AppCompatActivity {
+    private EditText taskName;
+    private TextView IDTextView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_page);
 
-        //changing the top bar name
-        ActionBar AB = getSupportActionBar();
-        AB.setTitle("Planner");
-
-        // changing the bar logo picture
-        AB.setDisplayShowHomeEnabled(true);
-        AB.setDisplayUseLogoEnabled(true);
-        AB.setLogo(R.mipmap.ic_logo_round);
-
-    } // end of onCreate
+        taskName = (EditText)findViewById(R.id.taskSearchEditText);
+        IDTextView = (TextView) findViewById(R.id.isCompletedTextView);
+    }
 
 
     // Creating the menu to be viewable
@@ -48,10 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-
-    } // end of onCreateOptionsMenu
-
-
+    }
 
     // All images/logos are temporary right now :)
     // creating the menu to click through pages
@@ -93,6 +74,46 @@ public class MainActivity extends AppCompatActivity {
 
     } // end of onOptionsSelectMenu
 
+    // Finding the task
+    public void findClick (View v) throws ParseException {
+        String tempName = taskName.getText().toString();
+        PlannerDBHandler handler = new PlannerDBHandler(this);
+
+        Task task = handler.findTask(tempName);
+
+        if (task != null){
+
+           IDTextView.setText(String.valueOf(task.getTask_isCompleted()));
+
+            if (task.getTask_isCompleted()){
+                IDTextView.setText("Completed!");
+            } else {
+                IDTextView.setText("Incomplete");
+            }
 
 
-}// end of main activity
+
+        } else{
+            IDTextView.setText("Task not found");
+            taskName.setText("");
+        }
+    }
+
+    // deleting the task
+    public void deleteClick (View v){
+        String tempName = taskName.getText().toString();
+        PlannerDBHandler handler = new PlannerDBHandler(this);
+
+        boolean result = handler.deleteTask(tempName);
+
+        // if deleted it does this
+        if (result){
+            taskName.setText("");
+            IDTextView.setText( tempName + " was deleted!");
+        } else {
+            IDTextView.setText("No match found");
+        }
+    }
+
+
+}
