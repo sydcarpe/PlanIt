@@ -102,7 +102,7 @@
         android:layout_marginBottom="2dp"
         android:ems="10"
         android:hint="dd/MM/yyyy"
-        android:inputType="date"
+        android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

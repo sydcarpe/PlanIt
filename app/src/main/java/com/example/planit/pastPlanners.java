@@ -50,11 +50,11 @@ public class pastPlanners extends AppCompatActivity {
         */
 
         // creating and adding to the spinner
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, testList);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, testList);
 
         //setting the drop down menu to be the items in the list
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(arrayAdapter);
+        //arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //mySpinner.setAdapter(arrayAdapter);
     }
 
     // Creating the menu on the past planners page to be viewable

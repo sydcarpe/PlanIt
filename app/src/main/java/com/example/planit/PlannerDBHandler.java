@@ -40,7 +40,7 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
                 COLUMN_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TASKNAME + " TASK, " +
                 COLUMN_TASKTYPE + " STRING, "+
-                COLUMN_TASKDATE + " DATE, " +
+                COLUMN_TASKDATE + " STRING, " +
                 COLUMN_TASKCOMPLETED + " BOOLEAN)";
         db.execSQL(CREATE_TASK_TABLE);
 
@@ -59,13 +59,13 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     //adding tasks
     public void addTask(Task task){
         ContentValues myValues = new ContentValues();
-        Date tempDate =task.getTaskDueDate();
-        String dateStr = tempDate.toString();
+        //Date tempDate =task.getTaskDueDate();
+       // String dateStr = tempDate.toString();
 
         myValues.put(COLUMN_TASKNAME, task.getTaskName());
         myValues.put(COLUMN_TASKTYPE, task.getTaskType());
-        myValues.put(COLUMN_TASKDATE, dateStr);
-        myValues.put(COLUMN_TASKCOMPLETED, task.getTask_isCompleted());
+        myValues.put(COLUMN_TASKDATE, task.getTaskDueDate());
+       myValues.put(COLUMN_TASKCOMPLETED, task.getTask_isCompleted());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_TASKS, null, myValues);
@@ -73,12 +73,15 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     }
 
     // add task to array list to have all the names in the array
+    /*
     public void addToTaskList(Task task){
         ContentValues myValues = new ContentValues();
         myValues.get(task.getTaskName());
 
         taskNameList.add(task.getTaskName());
     }
+    */
+
 
     // finding the task
     public Task findTask(String name) {

@@ -1,5 +1,7 @@
 package com.example.planit;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -8,10 +10,10 @@ public class Task {
     private int ID;
     private String taskName;
     private String taskType;
-    private Date taskDueDate;
+    private String taskDueDate;
     private Boolean task_isCompleted;
 
-    public Task(int id, String tName, String tType, Date dueDate, boolean isCompleted){
+    public Task(int id, String tName, String tType, String dueDate, boolean isCompleted){
         ID = id;
         taskName = tName;
         taskType = tType;
@@ -19,13 +21,14 @@ public class Task {
         task_isCompleted = isCompleted;
     }
 
+
     public Task(int id, String tname, String type){
         ID = id;
         taskName = tname;
         taskType = type;
     }
 
-    public Task(String name, String type, Date d, Boolean c) {
+    public Task(String name, String type, String d, boolean c) {
         taskName = name;
         taskType = type;
         taskDueDate = d;
@@ -63,11 +66,11 @@ public class Task {
 
     //getters and setters of task Due date
 
-    public Date getTaskDueDate() {
+    public String getTaskDueDate() {
         return taskDueDate;
     }
 
-    public void setTaskDueDate(Date taskDueDate) {
+    public void setTaskDueDate(String taskDueDate) {
         this.taskDueDate = taskDueDate;
     }
 

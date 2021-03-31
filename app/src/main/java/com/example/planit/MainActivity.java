@@ -19,12 +19,6 @@ public class MainActivity extends AppCompatActivity {
     //link to do it
     //https://developer.android.com/studio/write/resource-manager
 
-    // creating an array list to be seen by all
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -118,7 +118,7 @@ public class addPage extends AppCompatActivity {
             choreBox.setEnabled(false);
         }
         if (!homeworkBox.isChecked()){
-            homeworkBox.setEnabled(true);
+            errandBox.setEnabled(true);
             choreBox.setEnabled(true);
         }
     }
@@ -138,11 +138,12 @@ public class addPage extends AppCompatActivity {
 
 
     // making the add button move to add page
-    public void addButtonOnClick(View v) throws ParseException {
+    // just removed parse exception
+    public void addButtonOnClick(View v) {
         //adding the new tasks to the queue
         String taskName = taskEdit.getText().toString();
         String taskTypeStr;
-        String userDate = dueDate.getText().toString();
+        String taskDueDate = dueDate.getText().toString();
 
         // will ALWAYS be false while first added - not completed yet!
         Boolean isCompleted = false;
@@ -150,7 +151,7 @@ public class addPage extends AppCompatActivity {
 
         // Creating the date format
 
-        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(userDate);
+        //Date date = new SimpleDateFormat("dd/MM/yyyy").parse(userDate);
 
         // check which box is checked
         if (errandBox.isChecked()){
@@ -171,12 +172,12 @@ public class addPage extends AppCompatActivity {
 
         // *** Add the date and stuff ***
         //Task task = new Task (taskName, taskTypeStr, date, isCompleted);
-        Task task = new Task(taskName, taskTypeStr, date, isCompleted);
+        Task task = new Task(taskName, taskTypeStr, taskDueDate, false);
 
         // creating the planner
         PlannerDBHandler handler = new PlannerDBHandler(this);
         handler.addTask(task);
-        handler.addToTaskList(task);
+        //handler.addToTaskList(task);
 
 
         Toast.makeText(this, taskName + " was added!" , Toast.LENGTH_SHORT).show();

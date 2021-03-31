@@ -75,23 +75,16 @@ public class searchPage extends AppCompatActivity {
     } // end of onOptionsSelectMenu
 
     // Finding the task
-    public void findClick (View v) throws ParseException {
+    public void findClick (View v) {
         String tempName = taskName.getText().toString();
         PlannerDBHandler handler = new PlannerDBHandler(this);
 
+
         Task task = handler.findTask(tempName);
 
-        if (task != null){
+        if (task != null) {
 
-           IDTextView.setText(String.valueOf(task.getTask_isCompleted()));
-
-            if (task.getTask_isCompleted()){
-                IDTextView.setText("Completed!");
-            } else {
-                IDTextView.setText("Incomplete");
-            }
-
-
+            IDTextView.setText(String.valueOf(task.getID()));
 
         } else{
             IDTextView.setText("Task not found");
