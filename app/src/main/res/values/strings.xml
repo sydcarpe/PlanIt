@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PlanIt</string>
+    <string name="checkbox">CheckBox</string>
 </resources>

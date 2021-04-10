@@ -44,20 +44,11 @@
                     android:inputType="text" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutCheckBox"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="50sp"
-                android:orientation="vertical">
+                android:layout_height="574dp" />
 
-                <CheckBox
-                    android:id="@+id/taskCheckBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Task"
-                    android:textSize="20sp" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

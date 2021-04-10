@@ -103,6 +103,7 @@ public class searchPage extends AppCompatActivity {
         if (result){
             taskName.setText("");
             IDTextView.setText( tempName + " was deleted!");
+            //handler.dailyList.remove(taskName);
         } else {
             IDTextView.setText("No match found");
         }

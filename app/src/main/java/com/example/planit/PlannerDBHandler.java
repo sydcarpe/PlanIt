@@ -5,12 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class PlannerDBHandler extends SQLiteOpenHelper {
 
@@ -29,7 +35,9 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     public PlannerDBHandler (Context c){
         super(c, DATABASE_NAME, null, DATABASE_VERSION);
     }
-    public ArrayList<String> taskNameList;
+
+    // creating public database
+    public ArrayList<Task> dailyList;
 
 
     // creating the table
@@ -40,12 +48,11 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
                 COLUMN_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TASKNAME + " TASK, " +
                 COLUMN_TASKTYPE + " STRING, "+
-                COLUMN_TASKDATE + " STRING, " +
+                COLUMN_TASKDATE + " DATE, " +
                 COLUMN_TASKCOMPLETED + " BOOLEAN)";
         db.execSQL(CREATE_TASK_TABLE);
 
-        // creating the arraylist
-        taskNameList = new ArrayList<>();
+
     }
 
 
@@ -59,28 +66,23 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     //adding tasks
     public void addTask(Task task){
         ContentValues myValues = new ContentValues();
-        //Date tempDate =task.getTaskDueDate();
-       // String dateStr = tempDate.toString();
+        // saving the date as a string
+        Date tempDate =task.getTaskDueDate();
+        String dateStr = tempDate.toString();
 
         myValues.put(COLUMN_TASKNAME, task.getTaskName());
         myValues.put(COLUMN_TASKTYPE, task.getTaskType());
-        myValues.put(COLUMN_TASKDATE, task.getTaskDueDate());
-       myValues.put(COLUMN_TASKCOMPLETED, task.getTask_isCompleted());
+        myValues.put(COLUMN_TASKDATE, dateStr);
+        myValues.put(COLUMN_TASKCOMPLETED, task.getTask_isCompleted());
+
+        //dailyList.add(task);
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_TASKS, null, myValues);
         db.close();
     }
 
-    // add task to array list to have all the names in the array
-    /*
-    public void addToTaskList(Task task){
-        ContentValues myValues = new ContentValues();
-        myValues.get(task.getTaskName());
 
-        taskNameList.add(task.getTaskName());
-    }
-    */
 
 
     // finding the task
@@ -110,6 +112,7 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
 
 
 
+
     // deleting the task
     public boolean deleteTask (String name){
         boolean result = false;
@@ -136,6 +139,8 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+
 
 
 

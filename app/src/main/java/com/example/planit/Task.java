@@ -10,10 +10,10 @@ public class Task {
     private int ID;
     private String taskName;
     private String taskType;
-    private String taskDueDate;
+    private Date taskDueDate;
     private Boolean task_isCompleted;
 
-    public Task(int id, String tName, String tType, String dueDate, boolean isCompleted){
+    public Task(int id, String tName, String tType, Date dueDate, boolean isCompleted){
         ID = id;
         taskName = tName;
         taskType = tType;
@@ -28,7 +28,7 @@ public class Task {
         taskType = type;
     }
 
-    public Task(String name, String type, String d, boolean c) {
+    public Task(String name, String type, Date d, boolean c) {
         taskName = name;
         taskType = type;
         taskDueDate = d;
@@ -66,11 +66,11 @@ public class Task {
 
     //getters and setters of task Due date
 
-    public String getTaskDueDate() {
+    public Date getTaskDueDate() {
         return taskDueDate;
     }
 
-    public void setTaskDueDate(String taskDueDate) {
+    public void setTaskDueDate(Date taskDueDate) {
         this.taskDueDate = taskDueDate;
     }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,6 +29,7 @@ public class addPage extends AppCompatActivity {
     // cancel button goes to home page again
     // *** means to-do
     // I should use Array list bc i want to be able to use dups.
+
 
     // creating the views/edits/checkboxes
     private EditText taskEdit;
@@ -47,7 +51,6 @@ public class addPage extends AppCompatActivity {
         errandBox = (CheckBox)findViewById(R.id.errandCheckBox);
         homeworkBox = (CheckBox)findViewById(R.id.homeworkCheckBox);
         choreBox = (CheckBox)findViewById(R.id.choreCheckBox);
-
 
     }
 
@@ -143,17 +146,17 @@ public class addPage extends AppCompatActivity {
         //adding the new tasks to the queue
         String taskName = taskEdit.getText().toString();
         String taskTypeStr;
+        //user inputed date
         String taskDueDate = dueDate.getText().toString();
+        //creating the tempdate to put in the database, sets it equal to current date,
+        // unless state otherwise
+        // creating date format as well
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date tempDate = new Date();
 
-        // will ALWAYS be false while first added - not completed yet!
-        Boolean isCompleted = false;
-
-
-        // Creating the date format
-
-        //Date date = new SimpleDateFormat("dd/MM/yyyy").parse(userDate);
 
         // check which box is checked
+        // sets the type = to Errand, homework, or chore
         if (errandBox.isChecked()){
             taskTypeStr = "Errand";
             //Toast.makeText(this, " Errand Box was Checked", Toast.LENGTH_SHORT).show();
@@ -168,19 +171,30 @@ public class addPage extends AppCompatActivity {
             //Toast.makeText(this, "No boxes were checked", Toast.LENGTH_SHORT).show();
         }
 
-        // Saving the task
+        //try and catch for parse exception
+        try {
+            tempDate = formatter.parse(taskDueDate);
 
-        // *** Add the date and stuff ***
-        //Task task = new Task (taskName, taskTypeStr, date, isCompleted);
-        Task task = new Task(taskName, taskTypeStr, taskDueDate, false);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        // Saving the task
+        Task task = new Task(taskName, taskTypeStr, tempDate, false);
+
+
 
         // creating the planner
         PlannerDBHandler handler = new PlannerDBHandler(this);
         handler.addTask(task);
-        //handler.addToTaskList(task);
 
 
-        Toast.makeText(this, taskName + " was added!" , Toast.LENGTH_SHORT).show();
+        // adding task to arrayList
+        // handler.dailyList.add(task);
+
+
+        //Toast.makeText(this, taskName + " was added!" , Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, handler.dailyList.get(1).getTaskName(), Toast.LENGTH_LONG).show();
 
         //creating the intent
         // I changed it so it will take back to main menu
@@ -194,6 +208,8 @@ public class addPage extends AppCompatActivity {
         Intent myIntent = new Intent (this, MainActivity.class);
         startActivity(myIntent);
     }
+
+
 
 
 } // end of add page
