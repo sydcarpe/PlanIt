@@ -33,21 +33,12 @@
                     android:text="Date"
                     android:textSize="24sp" />
 
-                <EditText
-                    android:id="@+id/goalEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25sp"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="Today's Goal"
-                    android:inputType="text" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="574dp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>

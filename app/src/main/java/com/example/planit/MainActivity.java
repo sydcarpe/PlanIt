@@ -27,69 +27,70 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
     private static final boolean USE_FLAG = true;
     public ArrayList<Task> dailyList;
     public String[] taskNameList;
+
+
     // have to add images a certain way
     // set densitys too!
     //link to do it
     //https://developer.android.com/studio/write/resource-manager
 
-    // rubric for P4
-    //Try/catch: 20 pts :)
-    //Design doc: 10 pts :)
-    //Update the Date data in the DB: 20 pts :)
-    //Spinner: 10 pts
-    //Display tasks on the home page: 15 pts
-    //Display tasks on past screen: 15 pts
-    //Intent Flags: 10 pts
+    /*
+    Updated design doc: 10 pts :)
+    Comments: 10 pts :)
+    Still working on spinner: 15 pts :)
+    Polishing things (layout, …): 15 pts :)
+    SMS reminders: 25 pts :)
+    Add send sms summary when creating an item :)
+    Figuring out how to set alarm with OS to wake up and send SMS
+    Add more data for demo: 25 pts :)
+     */
+
 
     // recycler view
     TaskRecyclerViewAdapter myAdapter;
+    CheckBox checkBoxes;
 
     private CheckBox taskBox;
     // creating adapter and layoutview
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //changing the top bar name
         ActionBar AB = getSupportActionBar();
-        AB.setTitle("Planner");
+        AB.setTitle("My Planner");
 
-        // changing the bar logo picture
+        // changing the bar logo pictures
         AB.setDisplayShowHomeEnabled(true);
         AB.setDisplayUseLogoEnabled(true);
         AB.setLogo(R.mipmap.ic_logo_round);
-        dailyList = new ArrayList<>();
+
+        checkBoxes = (CheckBox)findViewById(R.id.taskCheckBox);
 
 
-        // finding
-        //taskBox = (CheckBox)findViewById(R.id.taskCheckBox);
         PlannerDBHandler handler = new PlannerDBHandler(this);
-        // creating local var
-        //ArrayList<Task> arrayList = handler.dailyList;
-       // String[] taskNames = new String[arrayList.size()];
 
-        //test
-        String[] myList = new String[3];
-        myList[0] = "assignment";
-        myList[1] = "chore";
-        myList[2] = "errand";
+        // grabbing the arraylist from the DB
+        ArrayList<String> myList = handler.getTaskNames();
+        //ArrayList<String> myList = handler.currentDayTasks();
 
+        // moving the array list to a String[] list so it is easier to view the tasks in recy view
+        // this works
+        String [] tmpList = new String[myList.size()];
+        for (int i = 0; i < myList.size(); i++){
+            tmpList[i] = myList.get(i);
+        }
 
-
-        DisplayTasks();
-        //recycler View stuff
+        //recycler View
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView);
         rView.setLayoutManager(new LinearLayoutManager(this));
-        myAdapter = new TaskRecyclerViewAdapter(myList);
+        //making recycler view show the data
+        myAdapter = new TaskRecyclerViewAdapter(tmpList);
         myAdapter.setClickListener(this);
         rView.setAdapter(myAdapter);
-
-
-
-
     } // end of onCreate
 
 
@@ -140,26 +141,16 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
 
     } // end of onOptionsSelectMenu
 
-
-    // need to create a way to display all tasks on home page that is current date
-    public void DisplayTasks(){
-        PlannerDBHandler handler = new PlannerDBHandler(this);
-
-
-        if (dailyList.isEmpty()){
-            //do nothing?
-        } else{
-            // add tasks to home page first
-            taskNameList = new String[dailyList.size()];
-            for (int i = 0; i<dailyList.size(); i++){
-                taskNameList[i] = dailyList.get(i).getTaskName();
-            }
-        }
-    }
-
-
     public void onItemClick(View view, int position){
         Toast.makeText(this, "You clicked " + myAdapter.getItem(position), Toast.LENGTH_LONG).show();
+    }
+
+    //if checkbox is clicked
+    public void checkBoxClick(View v){
+        if(checkBoxes.isChecked()){
+            //get the task and make the boolean = true for completed
+        }
+        // else it stays unclicked
     }
 
 

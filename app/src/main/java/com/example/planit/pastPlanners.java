@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class pastPlanners extends AppCompatActivity {
@@ -30,13 +26,18 @@ public class pastPlanners extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_planners);
 
+        PlannerDBHandler handler = new PlannerDBHandler(this);
+
         //creating spinner/dropdown menu
-        Spinner mySpinner = (Spinner)findViewById(R.id.dateDropDown);
+        Spinner incompleteSpinner = (Spinner)findViewById(R.id.incompleteSpinner);
+        Spinner completedSpinner = (Spinner)findViewById(R.id.completeSpinner);
 
 
         //test drop down menu arrayList
-        ArrayList<String> testList = new ArrayList<String>();
-
+        // maybe making 2 drop downs, completed and incompleted
+        //ArrayList<String> incompletedList = handler.incompletedTasks();
+        //ArrayList<String> completedList = handler.completedTasks();
+        ArrayList<String> tmpList = handler.getTaskNames();
 
 
         // crashes app -_-
@@ -50,11 +51,16 @@ public class pastPlanners extends AppCompatActivity {
         */
 
         // creating and adding to the spinner
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, testList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, tmpList);
+        ArrayAdapter<String> arrayAdapterCompleted = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tmpList);
 
         //setting the drop down menu to be the items in the list
-        //arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //mySpinner.setAdapter(arrayAdapter);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        incompleteSpinner.setAdapter(arrayAdapter);
+
+        // for completed list
+        arrayAdapterCompleted.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        completedSpinner.setAdapter(arrayAdapterCompleted);
     }
 
     // Creating the menu on the past planners page to be viewable

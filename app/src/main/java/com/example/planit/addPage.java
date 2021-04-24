@@ -1,9 +1,15 @@
 package com.example.planit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.Telephony;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +43,7 @@ public class addPage extends AppCompatActivity {
     private CheckBox errandBox;
     private CheckBox homeworkBox;
     private CheckBox choreBox;
+    private EditText phoneNumber;
 
 
 
@@ -51,6 +58,7 @@ public class addPage extends AppCompatActivity {
         errandBox = (CheckBox)findViewById(R.id.errandCheckBox);
         homeworkBox = (CheckBox)findViewById(R.id.homeworkCheckBox);
         choreBox = (CheckBox)findViewById(R.id.choreCheckBox);
+        phoneNumber = (EditText)findViewById(R.id.editTextPhone);
 
     }
 
@@ -171,7 +179,7 @@ public class addPage extends AppCompatActivity {
             //Toast.makeText(this, "No boxes were checked", Toast.LENGTH_SHORT).show();
         }
 
-        //try and catch for parse exception
+        //try and catch for parse exception for the date
         try {
             tempDate = formatter.parse(taskDueDate);
 
@@ -187,14 +195,9 @@ public class addPage extends AppCompatActivity {
         // creating the planner
         PlannerDBHandler handler = new PlannerDBHandler(this);
         handler.addTask(task);
+        //handler.addTaskToArray(task);
+        handler.myTasks.add(task.getTaskName());
 
-
-        // adding task to arrayList
-        // handler.dailyList.add(task);
-
-
-        //Toast.makeText(this, taskName + " was added!" , Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, handler.dailyList.get(1).getTaskName(), Toast.LENGTH_LONG).show();
 
         //creating the intent
         // I changed it so it will take back to main menu
@@ -208,6 +211,43 @@ public class addPage extends AppCompatActivity {
         Intent myIntent = new Intent (this, MainActivity.class);
         startActivity(myIntent);
     }
+
+
+    // creating SMS button on click
+    // will send the user a text of the task and due date
+    public void onSendButton(View v){
+        //getting date and task name to send to user
+        String date = dueDate.getText().toString();
+        String taskName = taskEdit.getText().toString();
+        String phoneNum = phoneNumber.getText().toString();
+
+        // creating automated message to send the date and name together at once
+        String message = "New Task '" + taskName+ "' has been added! Due date is " + date ;
+
+        //getting manager
+        SmsManager smsManager = SmsManager.getDefault();
+
+        // cant send if no phone number, so
+        if (phoneNum.isEmpty()){
+            Toast.makeText(this, "Please enter a phone number", Toast.LENGTH_LONG).show();
+        }
+
+        //sending text
+        smsManager.sendTextMessage(phoneNum, null, message, null, null);
+
+        // oreo and above code
+        int SMS_PERMISSION_REQ_CODE_SUBMIT =101;
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS)
+                        != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(addPage.this, new String[]{Manifest.permission.RECEIVE_SMS},
+                    SMS_PERMISSION_REQ_CODE_SUBMIT);
+            ActivityCompat.requestPermissions(addPage.this, new String[] {Manifest.permission.SEND_SMS},
+                    SMS_PERMISSION_REQ_CODE_SUBMIT);
+        }
+    }
+
 
 
 

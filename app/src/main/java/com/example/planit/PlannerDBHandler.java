@@ -5,18 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 
 public class PlannerDBHandler extends SQLiteOpenHelper {
 
@@ -31,13 +23,15 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_TASKDATE = "task_date"; // date that the task must be completed
     private static final String COLUMN_TASKCOMPLETED = "task_isCompleted"; // boolean if task is completed or not
 
+    //creating a new arrayList to be accessed by all
+    public ArrayList<String> myTasks = new ArrayList<>();
+
 
     public PlannerDBHandler (Context c){
         super(c, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // creating public database
-    public ArrayList<Task> dailyList;
+
 
 
     // creating the table
@@ -83,6 +77,142 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
     }
 
 
+
+    // getting task names with SQL
+
+    public ArrayList<String> getTaskNames(){
+        // selecting from task table SQL
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor myCursor = db.rawQuery(sqlQuery, null);
+        ArrayList<String> taskNameArray = new ArrayList<>();
+
+        // while cursor isn't closed get name and save it to a list
+        // use moveToNext()
+        // if its the last one then close it and close the while loop
+        myCursor.moveToPosition(0);
+        while(!myCursor.isClosed()){
+            //getting the current name and adding to list
+            String tmpName = myCursor.getString(1);
+            taskNameArray.add(tmpName);
+
+            // moving on to the next and repeating loop
+            myCursor.moveToNext();
+            // if cursor is after last, end
+            if (myCursor.isAfterLast()){
+                myCursor.close();
+            }
+        }
+        return taskNameArray;
+    }
+
+    // organize the tasks by current date here
+    public ArrayList<String> currentDayTasks(){
+        //sql is "SELECT * FROM TABLE_TASKS WHERE CURDATE() >= task_date
+        // want to get past things that aren't completed to show up
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
+                " WHERE CURDATE() >= " + COLUMN_TASKDATE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor myCursor = db.rawQuery(sqlQuery, null);
+        ArrayList<String> currentDay = new ArrayList<>();
+
+        // while cursor isn't closed get name and save it to a list
+        // use moveToNext()
+        // if its the last one then close it and close the while loop
+
+        myCursor.moveToPosition(0);
+        while(!myCursor.isClosed()){
+            //getting the current name and adding to list
+            String tmpName = myCursor.getString(1);
+            currentDay.add(tmpName);
+
+            // moving on to the next and repeating loop
+            myCursor.moveToNext();
+            // if cursor is after last, end
+            if (myCursor.isAfterLast()){
+                myCursor.close();
+            }
+        }
+        return currentDay;
+    }
+
+    // getting the tasks that are completed
+    public ArrayList<String> completedTasks(){
+        //want to get where task_completed is 1
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
+                " WHERE " + COLUMN_TASKCOMPLETED + "=\"" + 1 + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor myCursor = db.rawQuery(sqlQuery, null);
+        ArrayList<String> completedTaskArray = new ArrayList<>();
+
+        // while cursor isn't closed get name and save it to a list
+        // use moveToNext()
+        // if its the last one then close it and close the while loop
+
+        myCursor.moveToPosition(0);
+        while(!myCursor.isClosed()){
+            //getting the current name and adding to list
+            String tmpName = myCursor.getString(1);
+            completedTaskArray.add(tmpName);
+
+            // moving on to the next and repeating loop
+            myCursor.moveToNext();
+            // if cursor is after last, end
+            if (myCursor.isAfterLast()){
+                myCursor.close();
+            }
+        }
+        return completedTaskArray;
+    }
+
+
+    //getting the incomplete lists of tasks to show
+    public ArrayList<String> incompletedTasks(){
+        //want to get where task_completed is 0 (false)
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
+                " WHERE " + COLUMN_TASKCOMPLETED + "=\"" + 0 + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor myCursor = db.rawQuery(sqlQuery, null);
+        ArrayList<String> incompletedTaskArray = new ArrayList<>();
+
+        // while cursor isn't closed get name and save it to a list
+        // use moveToNext()
+        // if its the last one then close it and close the while loop
+
+        myCursor.moveToPosition(0);
+        while(!myCursor.isClosed()){
+            //getting the current name and adding to list
+            String tmpName = myCursor.getString(1);
+            incompletedTaskArray.add(tmpName);
+
+            // moving on to the next and repeating loop
+            myCursor.moveToNext();
+            // if cursor is after last, end
+            if (myCursor.isAfterLast()){
+                myCursor.close();
+            }
+        }
+        return incompletedTaskArray;
+    }
+
+    // change the SQL to update the database to make the isCompleted be equal to true
+    public void changeCompletion(String name){
+        String sqlQuery = "SELECT * FROM " + TABLE_TASKS +
+                " WHERE " + COLUMN_TASKNAME + "=\"" +
+                name + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor myCursor = db.rawQuery(sqlQuery, null);
+
+        Task myTask = null;
+
+
+        // might have to do new SQL to update the isCompleted variable
+        if(myCursor.moveToFirst()){
+            String tmpName = myCursor.getString(1);
+            //String tmpBoolean = myCursor.getString
+        }
+
+    }
 
 
     // finding the task
@@ -139,9 +269,6 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-
-
-
 
 
 } // end of PlannerDBHandler
