@@ -86,11 +86,17 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor myCursor = db.rawQuery(sqlQuery, null);
         ArrayList<String> taskNameArray = new ArrayList<>();
+        myCursor.moveToPosition(0);
+
+        if(!myCursor.moveToFirst()){
+            myCursor.close();
+            return taskNameArray;
+        }
 
         // while cursor isn't closed get name and save it to a list
         // use moveToNext()
         // if its the last one then close it and close the while loop
-        myCursor.moveToPosition(0);
+
         while(!myCursor.isClosed()){
             //getting the current name and adding to list
             String tmpName = myCursor.getString(1);

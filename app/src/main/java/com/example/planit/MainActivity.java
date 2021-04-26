@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
 
     private CheckBox taskBox;
     // creating adapter and layoutview
+    public ArrayList<String> myList;
 
 
     @Override
@@ -74,9 +75,11 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
         PlannerDBHandler handler = new PlannerDBHandler(this);
 
         // grabbing the arraylist from the DB
-        ArrayList<String> myList = handler.getTaskNames();
+
         //ArrayList<String> myList = handler.currentDayTasks();
 
+
+        myList = handler.getTaskNames();
         // moving the array list to a String[] list so it is easier to view the tasks in recy view
         // this works
         String [] tmpList = new String[myList.size()];
@@ -91,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
         myAdapter = new TaskRecyclerViewAdapter(tmpList);
         myAdapter.setClickListener(this);
         rView.setAdapter(myAdapter);
+
+
+
+
     } // end of onCreate
 
 
