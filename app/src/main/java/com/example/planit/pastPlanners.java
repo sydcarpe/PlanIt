@@ -37,7 +37,7 @@ public class pastPlanners extends AppCompatActivity {
         // maybe making 2 drop downs, completed and incompleted
         //ArrayList<String> incompletedList = handler.incompletedTasks();
         //ArrayList<String> completedList = handler.completedTasks();
-        ArrayList<String> tmpList = handler.getTaskNames();
+        ArrayList<Task> tmpList = handler.getTaskNames();
 
 
         // crashes app -_-
@@ -51,8 +51,8 @@ public class pastPlanners extends AppCompatActivity {
         */
 
         // creating and adding to the spinner
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, tmpList);
-        ArrayAdapter<String> arrayAdapterCompleted = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tmpList);
+        ArrayAdapter<Task> arrayAdapter = new ArrayAdapter<Task>(this,  android.R.layout.simple_spinner_item, tmpList);
+        ArrayAdapter<Task> arrayAdapterCompleted = new ArrayAdapter<Task>(this, android.R.layout.simple_spinner_item, tmpList);
 
         //setting the drop down menu to be the items in the list
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

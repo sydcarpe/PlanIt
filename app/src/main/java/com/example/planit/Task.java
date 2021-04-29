@@ -22,10 +22,12 @@ public class Task {
     }
 
 
-    public Task(int id, String tname, String type){
+
+    public Task(int id, String tname, String type, Date d){
         ID = id;
         taskName = tname;
         taskType = type;
+        taskDueDate = d;
     }
 
     public Task(String name, String type, Date d, boolean c) {
@@ -34,6 +36,7 @@ public class Task {
         taskDueDate = d;
         task_isCompleted = c;
     }
+
 
 
     //getter and setters of ID

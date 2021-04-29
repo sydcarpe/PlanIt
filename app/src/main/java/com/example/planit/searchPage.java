@@ -9,8 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class searchPage extends AppCompatActivity {
     private EditText taskName;
@@ -79,12 +82,25 @@ public class searchPage extends AppCompatActivity {
         String tempName = taskName.getText().toString();
         PlannerDBHandler handler = new PlannerDBHandler(this);
 
-
+        // return the date when asked to find something
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+        Date myDate;
+        String dueDate;
         Task task = handler.findTask(tempName);
+        Boolean comp;
+        Boolean test;
+
 
         if (task != null) {
+            //Date testDate = new Date();
+            myDate = task.getTaskDueDate();
+            dueDate = myDate.toString();
+            comp = task.getTask_isCompleted();
 
-            IDTextView.setText(String.valueOf(task.getID()));
+
+            //Toast.makeText(this, "Due Date: " + myDate, Toast.LENGTH_LONG).show();
+            IDTextView.setText("Due Date: " + dueDate + " Is Completed: " + comp);
+
 
         } else{
             IDTextView.setText("Task not found");
