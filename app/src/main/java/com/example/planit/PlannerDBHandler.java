@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -88,7 +90,20 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         ArrayList<Task> taskNameArray = new ArrayList<>();
         myCursor.moveToPosition(0);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+
+        //SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+
+        //getting todays date
+        Date today = new Date();
+        String newToday = today.toString();
+        String todayStr = formatter.format(today);
+        try {
+            today = formatter.parse(todayStr);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         // if the cursor is empty, it will not crash the app because it won't continuously search for something
         if(!myCursor.moveToFirst()){
@@ -102,29 +117,37 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         // if its the last one then close it and close the while loop
         while(!myCursor.isClosed()){
             //getting the current name and adding to list
+            int tempID = myCursor.getInt(0);
             String tmpName = myCursor.getString(1);
             String tmpType = myCursor.getString(2);
             // String to Date here
             String tmpDate = myCursor.getString(3);
             Date myDate = new Date();
+
+            SimpleDateFormat format = new SimpleDateFormat("E MMM dd yyyy");
             try {
-                myDate = formatter.parse(tmpDate);
+                myDate = format.parse(tmpDate);
             } catch (Exception e){
                 e.printStackTrace();
             }
             //String to boolean is completed here
-            String tmpCompleted = myCursor.getString(4);
+            int tmpCompleted = myCursor.getInt(4);
             Boolean isCompleted;
             // changing tmpCompleted to boolean
-            if (tmpCompleted == "0"){
+            if (tmpCompleted == 0){
                 isCompleted = false;
             } else {
                 isCompleted = true;
             }
 
-            // adding task to Array
-            Task curTask = new Task(tmpName, tmpType, myDate, isCompleted);
-            taskNameArray.add(curTask);
+            Task curTask = new Task(tempID, tmpName, tmpType, myDate, isCompleted);
+
+
+            //getting the date and comparing
+            // getting rid of the time, and just comparing the date here
+            if(myDate.getDate() == today.getDate()){
+                taskNameArray.add(curTask);
+            }
 
             // moving on to the next and repeating loop
             myCursor.moveToNext();
@@ -136,41 +159,12 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         return taskNameArray;
     }
 
-    // organize the tasks by current date here
-    public ArrayList<String> currentDayTasks(){
-        //sql is "SELECT * FROM TABLE_TASKS WHERE CURDATE() >= task_date
-        // want to get past things that aren't completed to show up
-        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
-                " WHERE CURDATE() >= " + COLUMN_TASKDATE;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor myCursor = db.rawQuery(sqlQuery, null);
-        ArrayList<String> currentDay = new ArrayList<>();
 
-        // while cursor isn't closed get name and save it to a list
-        // use moveToNext()
-        // if its the last one then close it and close the while loop
 
-        myCursor.moveToPosition(0);
-        while(!myCursor.isClosed()){
-            //getting the current name and adding to list
-            String tmpName = myCursor.getString(1);
-            currentDay.add(tmpName);
-
-            // moving on to the next and repeating loop
-            myCursor.moveToNext();
-            // if cursor is after last, end
-            if (myCursor.isAfterLast()){
-                myCursor.close();
-            }
-        }
-        return currentDay;
-    }
-
-    // getting the tasks that are completed
+    //getting the incomplete lists of tasks to show
     public ArrayList<String> completedTasks(){
-        //want to get where task_completed is 1
-        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
-                " WHERE " + COLUMN_TASKCOMPLETED + "=\"" + 1 + "\"";
+        //want to get where task_completed is 0 (false)
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS ;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor myCursor = db.rawQuery(sqlQuery, null);
         ArrayList<String> completedTaskArray = new ArrayList<>();
@@ -181,10 +175,22 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
 
         myCursor.moveToPosition(0);
         while(!myCursor.isClosed()){
-            //getting the current name and adding to list
+            //getting the data from SQL
             String tmpName = myCursor.getString(1);
-            completedTaskArray.add(tmpName);
+            int tempBool = myCursor.getInt(4);
 
+            Boolean completed;
+            // changing from int to Bool
+            if (tempBool == 1){
+                completed = true;
+            } else{
+                completed = false;
+            }
+
+            // if not completed adding to incompleted Array
+            if(completed){
+                completedTaskArray.add(tmpName);
+            }
             // moving on to the next and repeating loop
             myCursor.moveToNext();
             // if cursor is after last, end
@@ -195,12 +201,10 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         return completedTaskArray;
     }
 
-
     //getting the incomplete lists of tasks to show
     public ArrayList<String> incompletedTasks(){
         //want to get where task_completed is 0 (false)
-        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS +
-                " WHERE " + COLUMN_TASKCOMPLETED + "=\"" + 0 + "\"";
+        String sqlQuery = "SELECT * FROM "  + TABLE_TASKS ;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor myCursor = db.rawQuery(sqlQuery, null);
         ArrayList<String> incompletedTaskArray = new ArrayList<>();
@@ -211,10 +215,22 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
 
         myCursor.moveToPosition(0);
         while(!myCursor.isClosed()){
-            //getting the current name and adding to list
+            //getting the data from SQL
             String tmpName = myCursor.getString(1);
-            incompletedTaskArray.add(tmpName);
+            int tempBool = myCursor.getInt(4);
 
+            Boolean completed;
+            // changing from int to Bool
+            if (tempBool == 1){
+                completed = true;
+            } else{
+                completed = false;
+            }
+
+            // if not completed adding to incompleted Array
+            if(!completed){
+                incompletedTaskArray.add(tmpName);
+            }
             // moving on to the next and repeating loop
             myCursor.moveToNext();
             // if cursor is after last, end
@@ -225,11 +241,15 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         return incompletedTaskArray;
     }
 
-    // updating the Boolean to be 1 and not 0
-    public void updateCompletion(String name){
 
+    // updating the Boolean to be 1 and not 0
+    public void updateCompletion(String name, Boolean isComplete){
+        String completeVal = "0";
+        if(isComplete){
+            completeVal = "1";
+        }
         String sqlQuery = "UPDATE " + TABLE_TASKS +
-                " SET " + COLUMN_TASKCOMPLETED + " = '1' " +
+                " SET " + COLUMN_TASKCOMPLETED + "=\"" + completeVal + "\"" +
                 " WHERE " + COLUMN_TASKNAME +"=\"" + name + "\"";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor myCursor = db.rawQuery(sqlQuery, null);
@@ -245,7 +265,6 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
 
 
 
-
     // finding the task
     public Task findTask(String name) {
         String sqlQuery = "SELECT * FROM " + TABLE_TASKS +
@@ -255,35 +274,30 @@ public class PlannerDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor myCursor = db.rawQuery(sqlQuery, null);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+        // creating format
+        SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd yyyy");
 
         Task myTask = null;
 
         if(myCursor.moveToFirst()){
-            /*
-            Date myDate = new Date();
-            String testDate = "13/02/2019";
-            Date date = null;
-            String testIdk = formatter.format(myDate);
-             */
             int tempID = myCursor.getInt(0);
             String tempName = myCursor.getString(1); // getting the task name
             String tempType = myCursor.getString(2); // getting the type of task it is
             String tempDate = myCursor.getString(3); // getting the date
-            String tempBool = myCursor.getString(4); // getting the boolean
+            int tempBool = myCursor.getInt(4); // getting the boolean
             Boolean completed;
             // get boolean isCompleted? Maybe?
             Date date = new Date();
+            //String newDate = String.format(tempDate, formatter);
 
-            if(tempBool == "0"){
+            // changing to boolean
+            if(tempBool == 0){
                 completed = false;
             } else {
                 completed = true;
             }
-
             // try and catch to change the date from string to date
             try {
-                //myDate = formatter.parse(testDate);
                 date = formatter.parse(tempDate);
 
             } catch (ParseException e){

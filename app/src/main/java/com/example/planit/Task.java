@@ -12,6 +12,7 @@ public class Task {
     private String taskType;
     private Date taskDueDate;
     private Boolean task_isCompleted;
+    private String testDate;
 
     public Task(int id, String tName, String tType, Date dueDate, boolean isCompleted){
         ID = id;
@@ -21,6 +22,12 @@ public class Task {
         task_isCompleted = isCompleted;
     }
 
+    public Task(int id, String name, String type, Boolean isComp){
+        ID = id;
+        taskName = name;
+        taskType = type;
+        task_isCompleted = isComp;
+    }
 
 
     public Task(int id, String tname, String type, Date d){

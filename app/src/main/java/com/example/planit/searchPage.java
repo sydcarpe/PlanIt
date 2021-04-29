@@ -83,7 +83,7 @@ public class searchPage extends AppCompatActivity {
         PlannerDBHandler handler = new PlannerDBHandler(this);
 
         // return the date when asked to find something
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("E MMM dd");
         Date myDate;
         String dueDate;
         Task task = handler.findTask(tempName);
@@ -94,12 +94,20 @@ public class searchPage extends AppCompatActivity {
         if (task != null) {
             //Date testDate = new Date();
             myDate = task.getTaskDueDate();
-            dueDate = myDate.toString();
+            dueDate = formatter.format(myDate);
             comp = task.getTask_isCompleted();
+            String returnBool;
 
+            //String todayStr = formatter.format(dueDate);
+
+            if(comp == true){
+                returnBool = "! This task is finished!";
+            } else{
+                returnBool = "! Not yet completed";
+            }
 
             //Toast.makeText(this, "Due Date: " + myDate, Toast.LENGTH_LONG).show();
-            IDTextView.setText("Due Date: " + dueDate + " Is Completed: " + comp);
+            IDTextView.setText("This is due " + dueDate + returnBool);
 
 
         } else{

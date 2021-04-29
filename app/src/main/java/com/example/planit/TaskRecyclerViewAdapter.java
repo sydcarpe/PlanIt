@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.ViewHolder>{
     private String[] taskData;
+    private ArrayList<Task> taskArray;
     private Context context;
     private ItemClickListener clickListener;
     Task task;
+
     // data pref?
 
 
@@ -30,6 +35,10 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
         taskData = data;
     }
 
+    public void setTasks (ArrayList<Task> myList){
+        taskArray = myList;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView taskDisplayTextView;
@@ -38,6 +47,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
         public ViewHolder(View view){
             super(view);
+
             taskDisplayTextView = (TextView)view.findViewById(R.id.taskCheckBox);
             // the task check box
             checkBox = (CheckBox)view.findViewById(R.id.taskCheckBox);
@@ -50,13 +60,11 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                       // Toast.makeText(TaskRecyclerViewAdapter.this.context, "Selected " + taskDisplayTextView.getText(), Toast.LENGTH_LONG).show();
-                    }
+                   PlannerDBHandler handler = new PlannerDBHandler(context);
+                   String taskName = buttonView.getText().toString();
+                   handler.updateCompletion(taskName, isChecked);
                 }
             });
-
-
         }
 
         //getter for GUI component you want to manipulate
@@ -89,7 +97,12 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position){
         viewHolder.getTextView().setText(taskData[position]);
-        // i cant get the equvilant to FilterModel filterM = filterList.get(position)
+        PlannerDBHandler handler = new PlannerDBHandler(context);
+        Task task = handler.findTask(taskData[position]);
+        if(task.getTask_isCompleted()){
+            viewHolder.checkBox.setChecked(true);
+        }
+
 
     }// end of onBindViewHolder
 

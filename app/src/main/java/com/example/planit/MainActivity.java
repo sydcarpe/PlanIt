@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
     private CheckBox taskBox;
     // creating adapter and layoutview
     public ArrayList<Task> myList;
-    ArrayList<String> stringTaskNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
         //changing the format to just display the current date
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
         Date today = new Date();
-        String todayStr = today.toString();
-        todayStr = formatter.format(today);
+        String todayStr = formatter.format(today);
         dateTextView.setText(todayStr);
 
 
@@ -97,47 +95,17 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
         for(int i = 0; i < myList.size(); i++){
             Task curTask = myList.get(i);
             String tempName = curTask.getTaskName();
-            Boolean tempBool = curTask.getTask_isCompleted();
-
-            /*
-            if(tempBool == false){
-                checkBoxes.setChecked(false);
-            } else {
-                checkBoxes.setChecked(true);
-            }
-
-             */
-
             tmpList[i] = tempName;
         }
-
 
         //recycler View
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView);
         rView.setLayoutManager(new LinearLayoutManager(this));
         //making recycler view show the data
-        myAdapter = new TaskRecyclerViewAdapter(tmpList);
+        myAdapter = new TaskRecyclerViewAdapter(tmpList, this);
+        myAdapter.setTasks(myList);
         myAdapter.setClickListener(this);
         rView.setAdapter(myAdapter);
-
-       handler.updateCompletion(tmpList[1]);
-
-        // if isCompleted is = to 0, unchecked,
-        // if = to 1, it is checked
-        /*
-        for(int i = 0; i < myList.size(); i++){
-            Task curTask = myList.get(i);
-            Boolean tmpComp = curTask.getTask_isCompleted();
-
-            if (tmpComp){
-                checkBoxes.setChecked(true);
-            } else {
-                checkBoxes.setChecked(false);
-            }
-        }
-         */
-
-        // if checked off, it becomes completed
     } // end of onCreate
 
 

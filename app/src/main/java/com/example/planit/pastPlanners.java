@@ -19,6 +19,10 @@ public class pastPlanners extends AppCompatActivity {
     // https://www.tutorialspoint.com/how-can-i-add-items-to-a-spinner-in-android
 
 
+    ArrayList<String> incompletedList;
+    ArrayList<String> completedList;
+
+
 
 
     @Override
@@ -35,24 +39,14 @@ public class pastPlanners extends AppCompatActivity {
 
         //test drop down menu arrayList
         // maybe making 2 drop downs, completed and incompleted
-        //ArrayList<String> incompletedList = handler.incompletedTasks();
-        //ArrayList<String> completedList = handler.completedTasks();
-        ArrayList<Task> tmpList = handler.getTaskNames();
+       incompletedList = handler.incompletedTasks();
+       completedList = handler.completedTasks();
 
 
-        // crashes app -_-
-        /*
-        for (int i = taskArrayList.taskList.size(); i < 0; i++){
-            String curTaskName = myTasks.get(i).getTaskName();
-            if (curTaskName != null){
-                testList.add(curTaskName);
-            }
-        }
-        */
 
         // creating and adding to the spinner
-        ArrayAdapter<Task> arrayAdapter = new ArrayAdapter<Task>(this,  android.R.layout.simple_spinner_item, tmpList);
-        ArrayAdapter<Task> arrayAdapterCompleted = new ArrayAdapter<Task>(this, android.R.layout.simple_spinner_item, tmpList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_item, incompletedList);
+        ArrayAdapter<String> arrayAdapterCompleted = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, completedList);
 
         //setting the drop down menu to be the items in the list
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
