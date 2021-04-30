@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#d6fadf"
     tools:context=".addPage">
 
     <EditText
@@ -17,6 +18,7 @@
         android:ems="10"
         android:hint="New Task"
         android:inputType="text"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/dueDateEditTextDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -35,6 +37,7 @@
         android:ems="10"
         android:hint="Due Date: dd/MM/yyyy"
         android:inputType="text"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -62,21 +65,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onErrandClick"
-            android:text="Errand" />
+            android:text="Errand"
+            android:textSize="20sp" />
 
         <CheckBox
             android:id="@+id/homeworkCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onHomeworkClick"
-            android:text="Homework" />
+            android:text="Homework"
+            android:textSize="20sp" />
 
         <CheckBox
             android:id="@+id/choreCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onChoreClick"
-            android:text="Chore" />
+            android:text="Chore"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -87,6 +93,9 @@
         android:layout_marginTop="30dp"
         android:onClick="onSendButton"
         android:text="Send SMS"
+        android:textColor="#d6fadf"
+        android:textSize="24sp"
+        app:backgroundTint="#F89476"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +135,9 @@
             android:layout_weight="1"
             android:onClick="cancelButtononClick"
             android:text="Cancel"
+            android:textColor="#d6fadf"
+            android:textSize="24sp"
+            app:backgroundTint="#F89476"
             app:icon="@android:drawable/btn_dialog" />
 
         <Button
@@ -135,6 +147,9 @@
             android:layout_weight="1"
             android:onClick="addButtonOnClick"
             android:text="Add"
+            android:textColor="#d6fadf"
+            android:textSize="24sp"
+            app:backgroundTint="#F89476"
             app:icon="@android:drawable/ic_input_add" />
 
     </LinearLayout>

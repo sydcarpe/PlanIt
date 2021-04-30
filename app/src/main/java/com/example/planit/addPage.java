@@ -1,5 +1,6 @@
 package com.example.planit;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,6 +52,14 @@ public class addPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_page);
+
+        ActionBar AB = getSupportActionBar();
+        AB.setTitle("My Planner");
+
+        // changing the bar logo pictures
+        AB.setDisplayShowHomeEnabled(true);
+        AB.setDisplayUseLogoEnabled(true);
+        AB.setLogo(R.drawable.round_menu_book_24);
 
 
         taskEdit = (EditText)findViewById(R.id.taskEditText);

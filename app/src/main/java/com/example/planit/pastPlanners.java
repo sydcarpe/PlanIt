@@ -1,13 +1,18 @@
 package com.example.planit;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,6 +34,14 @@ public class pastPlanners extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_planners);
+
+        ActionBar AB = getSupportActionBar();
+        AB.setTitle("My Planner");
+
+        // changing the bar logo pictures
+        AB.setDisplayShowHomeEnabled(true);
+        AB.setDisplayUseLogoEnabled(true);
+        AB.setLogo(R.drawable.round_menu_book_24);
 
         PlannerDBHandler handler = new PlannerDBHandler(this);
 
@@ -101,7 +114,5 @@ public class pastPlanners extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 }

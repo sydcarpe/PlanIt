@@ -1,5 +1,6 @@
 package com.example.planit;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import java.util.Date;
 public class searchPage extends AppCompatActivity {
     private EditText taskName;
     private TextView IDTextView;
+    private CheckBox updateCheck;
 
 
     @Override
@@ -25,9 +28,20 @@ public class searchPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_page);
 
+        ActionBar AB = getSupportActionBar();
+        AB.setTitle("My Planner");
+
+        // changing the bar logo pictures
+        AB.setDisplayShowHomeEnabled(true);
+        AB.setDisplayUseLogoEnabled(true);
+        AB.setLogo(R.drawable.round_menu_book_24);
+
         taskName = (EditText)findViewById(R.id.taskSearchEditText);
         IDTextView = (TextView) findViewById(R.id.isCompletedTextView);
+        updateCheck = (CheckBox)findViewById(R.id.completeCheck);
+        updateCheck.setEnabled(false);
     }
+
 
 
     // Creating the menu to be viewable
@@ -91,12 +105,24 @@ public class searchPage extends AppCompatActivity {
         Boolean test;
 
 
+
         if (task != null) {
             //Date testDate = new Date();
             myDate = task.getTaskDueDate();
             dueDate = formatter.format(myDate);
             comp = task.getTask_isCompleted();
             String returnBool;
+
+            updateCheck.setEnabled(true);
+
+            if(comp){
+                updateCheck.setChecked(true);
+            }
+
+            if(updateCheck.isChecked()){
+                handler.updateCompletion(tempName, true);
+                comp = true;
+            }
 
             //String todayStr = formatter.format(dueDate);
 
@@ -118,6 +144,7 @@ public class searchPage extends AppCompatActivity {
 
     // deleting the task
     public void deleteClick (View v){
+
         String tempName = taskName.getText().toString();
         PlannerDBHandler handler = new PlannerDBHandler(this);
 

@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
         // changing the bar logo pictures
         AB.setDisplayShowHomeEnabled(true);
         AB.setDisplayUseLogoEnabled(true);
-        AB.setLogo(R.mipmap.ic_logo_round);
+        AB.setLogo(R.drawable.round_menu_book_24);
 
         checkBoxes = (CheckBox)findViewById(R.id.taskCheckBox);
         dateTextView = (TextView)findViewById(R.id.dateTextView);
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements TaskRecyclerViewA
             String tempName = curTask.getTaskName();
             tmpList[i] = tempName;
         }
+
 
         //recycler View
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView);
